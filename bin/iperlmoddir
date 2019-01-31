@@ -1,0 +1,33 @@
+#!/usr/bin/env perl
+
+package iperlmoddir;
+
+use Getopt::Long::Descriptive;
+use App::iperlmoddir;
+    use Data::Dumper;
+
+my ( $opts, $usage ) = describe_options(
+    $0 . ' %o',
+    [ 'skip|s=s',
+        "comma-separated list of modules to exclude from results" ],
+    [ 'dir|d=s', "specify other directory than current" ],
+
+    [ 'group|g', "group by rows" ],
+    [ 'stat|count|c',  "print statistics, default true" ],
+    [ 'public-only|p', "print only public methods, default false" ],
+
+    [ 'no-used',      "do not print report about used modules" ],
+    [ 'no-constants', "do not print report about constants" ],
+    [ 'no-subs',      "do not print report about subroutines" ],
+
+    [ 'verbose|v', "print extra stuff" ],
+    [ 'help|h', "print usage message and exit", { shortcircuit => 1 } ],
+
+);
+
+print( $usage->text ), exit if $opts->help;
+print "$0 run with options : " . Dumper $opts if $opts->verbose;
+
+exit App::iperlmoddir->run($opts);
+
+1;
