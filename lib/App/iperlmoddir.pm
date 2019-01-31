@@ -13,11 +13,11 @@ App::iperlmoddir - quick print info about modules in directory at CSV file
 
 =head1 SYNOPSIS
  
-  $ iperlmoddir
+  $ iperlmoddir -g -d /foo/bar -s Foo.pm,Bar.pm
   
 =head1 DESCRIPTION
 
-By default, it prints 3 CSV files with info
+By default, it prints CSV file meta.csv with info
 
 1) about subroutines
 
@@ -27,7 +27,7 @@ By default, it prints 3 CSV files with info
 
 =head1 OPTIONS
 
-please check iperlmoddir --help
+For more info please check iperlmoddir --help
 
 =cut
 
@@ -43,9 +43,6 @@ sub run {
     chdir $dir;
     my $res = parse_modules($modules);
     chdir $cwd;
-    
-    # need to form array of columns
-    # same for used and consts
     
     my $part_rows = {};
     my $csv_filename = "meta.csv";
