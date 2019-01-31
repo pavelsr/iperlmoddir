@@ -78,6 +78,9 @@ sub _substr_aldc {
 sub _extract_base {
     my (%p) = @_;
 
+    croak "Abs path is not defined" if !defined $p{abs};
+    croak "Rel path is not defined" if !defined $p{rel};
+
 # https://stackoverflow.com/questions/7283274/check-whether-a-string-contains-a-substring
     if ( index( $p{abs}, $p{rel} ) == -1 ) {
         croak "Relative path "
@@ -129,10 +132,15 @@ sub parse_modules {
         _validate_module_fullname($f);
 
         my $info         = Module::Metadata->new_from_file($f);
+
         my $name         = $info->name;
+        
+        say "Module::Metadata can not define module name of $f" if ( $v && !defined $name);
+        next if !defined $name;
+        
         my $abs_filename = $info->filename;
         my $rel_filename = module_path $name;
-
+  
         eval {
             my $inc =
               _extract_base( abs => $abs_filename, rel => $rel_filename );
