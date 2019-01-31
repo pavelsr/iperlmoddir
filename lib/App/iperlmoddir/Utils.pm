@@ -119,7 +119,9 @@ $files are always without basepath
 =cut
 
 sub parse_modules {
-    my ($files) = @_;
+    my ($files, $v) = @_;
+    
+    say "Start parsing modules : \n".join("\n", @$files) if $v;
 
     my @res = ();
     for my $f ( sort @$files ) {
@@ -146,7 +148,10 @@ sub parse_modules {
 
         # or autoload $name;
 
-        my $mod  = Module::Info->new_from_loaded($name);
+        my $mod  = Module::Info->new_from_module($name);
+        
+        croak "Problems with getting Module::Info at module ".$name if !defined $mod;
+        
         my %subs = $mod->subroutines;
         my @used = sort { "\L$a" cmp "\L$b" } $mod->modules_used;
 

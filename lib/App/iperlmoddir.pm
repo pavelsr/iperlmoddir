@@ -41,7 +41,7 @@ sub run {
     
     my $cwd = getcwd();
     chdir $dir;
-    my $res = parse_modules($modules);
+    my $res = parse_modules($modules, $opts->verbose);
     chdir $cwd;
     
     my $part_rows = {};
